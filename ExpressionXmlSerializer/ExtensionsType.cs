@@ -2,45 +2,45 @@ using System.Reflection;
 
 namespace ExpressionXmlSerializer
 {    
-    public static class ExtensionesType
+    public static class ExtensionsType
     {
-        #region Metodos
+        #region Methods
 
-        private static MethodInfo? GetMethod(string nombre, IEnumerable<MethodInfo> methodInfos, Type[] parametros, params Type[] argumentosGenericos)
+        private static MethodInfo? GetMethod(string name, IEnumerable<MethodInfo> methodInfos, Type[] types, params Type[] genericTypes)
         {
             foreach (var methodInfo in methodInfos)
             {
                 var methodInfo2 = methodInfo;
 
-                if (methodInfo2.Name != nombre)
+                if (methodInfo2.Name != name)
                 {
                     continue;
                 }
 
                 if (methodInfo2.IsGenericMethodDefinition)
                 {
-                    if (argumentosGenericos == null || argumentosGenericos.Length == 0)
+                    if (genericTypes == null || genericTypes.Length == 0)
                     {
                         continue;
                     }
 
                     var argumentosGenericos2 = methodInfo2.GetGenericArguments();
 
-                    if (argumentosGenericos.Length != argumentosGenericos2.Length)
+                    if (genericTypes.Length != argumentosGenericos2.Length)
                     {
                         continue;
                     }
 
-                    methodInfo2 = methodInfo2.MakeGenericMethod(argumentosGenericos);
+                    methodInfo2 = methodInfo2.MakeGenericMethod(genericTypes);
                 }
-                else if (argumentosGenericos != null && argumentosGenericos.Length > 0)
+                else if (genericTypes != null && genericTypes.Length > 0)
                 {
                     continue;
                 }
 
                 var parameterInfos = methodInfo2.GetParameters();
 
-                if (parametros == null || parametros.Length == 0)
+                if (types == null || types.Length == 0)
                 {
                     if (parameterInfos.Length == 0)
                     {
@@ -49,13 +49,13 @@ namespace ExpressionXmlSerializer
 
                     continue;
                 }
-                else if (parametros.Length == parameterInfos.Length)
+                else if (types.Length == parameterInfos.Length)
                 {
                     var sonParametrosIguales = true;
 
-                    for (var j = 0; j < parametros.Length; j++)
+                    for (var j = 0; j < types.Length; j++)
                     {
-                        if (parametros[j] != parameterInfos[j].ParameterType)
+                        if (types[j] != parameterInfos[j].ParameterType)
                         {
                             sonParametrosIguales = false;
                             break;
@@ -72,14 +72,14 @@ namespace ExpressionXmlSerializer
             return null;
         }
 
-        public static MethodInfo? GetMethod(this Type type, string nombre, Type[] parametros, params Type[] argumentosGenericos)
+        public static MethodInfo? GetMethod(this Type type, string name, Type[] types, params Type[] genericTypes)
         {
-            return GetMethod(nombre, type.GetTypeInfo().GetDeclaredMethods(nombre), parametros, argumentosGenericos);
+            return GetMethod(name, type.GetTypeInfo().GetDeclaredMethods(name), types, genericTypes);
         }
 
-        public static MethodInfo? GetMethod(this Type type, string nombre, BindingFlags bindingFlags, Type[] parametros, params Type[] argumentosGenericos)
+        public static MethodInfo? GetMethod(this Type type, string name, BindingFlags bindingFlags, Type[] types, params Type[] genericTypess)
         {
-            return GetMethod(nombre, type.GetMethods(bindingFlags), parametros, argumentosGenericos);
+            return GetMethod(name, type.GetMethods(bindingFlags), types, genericTypess);
         }
 
         #endregion

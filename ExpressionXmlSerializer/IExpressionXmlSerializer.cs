@@ -6,7 +6,7 @@ namespace ExpressionXmlSerializer
 {    
     public interface IExpressionXmlSerializer
     {
-        #region Metodos
+        #region Methods
         
         XElement? ToXElement(MemberInfo? memberInfo);
         XElement? ToXElement(ElementInit? elementInit);
