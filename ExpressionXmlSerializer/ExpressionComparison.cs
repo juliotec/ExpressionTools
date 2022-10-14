@@ -40,7 +40,7 @@ namespace ExpressionTools
         #endregion
         #region Methods
 
-        public static bool Equal(Expression? a, Expression? b)
+        public static bool Compare(Expression? a, Expression? b)
         {
             return new ExpressionComparison(a, b).AreEqual;
         }

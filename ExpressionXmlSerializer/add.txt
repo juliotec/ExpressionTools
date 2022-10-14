@@ -1,0 +1,75 @@
+<Expression>
+  <Type>
+    <Type>
+      <MemberType>TypeInfo</MemberType>
+      <Name>System.Func`2[[System.Int32, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e</Name>
+    </Type>
+  </Type>
+  <NodeType>Lambda</NodeType>
+  <Parameters>
+    <Expression>
+      <Type>
+        <Type>
+          <MemberType>TypeInfo</MemberType>
+          <Name>System.Int32, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e</Name>
+        </Type>
+      </Type>
+      <NodeType>Parameter</NodeType>
+      <Name>x</Name>
+      <IsByRef>false</IsByRef>
+      <CanReduce>false</CanReduce>
+    </Expression>
+  </Parameters>
+  <Name />
+  <Body>
+    <Expression>
+      <NodeType>Add</NodeType>
+      <Type>
+        <Type>
+          <MemberType>TypeInfo</MemberType>
+          <Name>System.Int32, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e</Name>
+        </Type>
+      </Type>
+      <CanReduce>false</CanReduce>
+      <Right>
+        <Expression>
+          <Type>
+            <Type>
+              <MemberType>TypeInfo</MemberType>
+              <Name>System.Int32, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e</Name>
+            </Type>
+          </Type>
+          <NodeType>Constant</NodeType>
+          <Value>1</Value>
+          <CanReduce>false</CanReduce>
+        </Expression>
+      </Right>
+      <Left>
+        <Expression>
+          <Type>
+            <Type>
+              <MemberType>TypeInfo</MemberType>
+              <Name>System.Int32, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e</Name>
+            </Type>
+          </Type>
+          <NodeType>Parameter</NodeType>
+          <Name>x</Name>
+          <IsByRef>false</IsByRef>
+          <CanReduce>false</CanReduce>
+        </Expression>
+      </Left>
+      <Method />
+      <Conversion />
+      <IsLifted>false</IsLifted>
+      <IsLiftedToNull>false</IsLiftedToNull>
+    </Expression>
+  </Body>
+  <ReturnType>
+    <Type>
+      <MemberType>TypeInfo</MemberType>
+      <Name>System.Int32, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e</Name>
+    </Type>
+  </ReturnType>
+  <TailCall>false</TailCall>
+  <CanReduce>false</CanReduce>
+</Expression>
