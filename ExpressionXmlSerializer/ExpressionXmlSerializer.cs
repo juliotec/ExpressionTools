@@ -64,14 +64,12 @@ namespace ExpressionTools
                 return default;
             }
 
-            TOut? tOut;
-
-            if (tIn == null || method == null || (tOut = method(tIn)) == null)
+            if (tIn == null || method == null)
             {
                 return new XElement(name);
             }
                                                                         
-            return new XElement(name, tOut);
+            return new XElement(name, method(tIn));
         }
                                           
         public static XElement? CreateXElement<TIn, TOut>(string? name, IEnumerable<TIn>? iEnumerable, Func<TIn?, TOut?>? method)
@@ -290,7 +288,7 @@ namespace ExpressionTools
                 "MemberMemberBinding" => ParseMemberMemberBinding(xElement),
                 _ => throw new Exception("LocalName unknown")
             };
-        }
+         }
                                            
         protected virtual object? ParseNoConvertible(XElement? xElement)
         {
@@ -800,30 +798,28 @@ namespace ExpressionTools
         protected virtual InvocationExpression? ParseInvocationExpression(XElement? xElement)
         {
             Expression? expression;
-            IEnumerable<Expression?>? expressions;
 
-            if ((expression = ParseFirstNode("Expression", xElement, ParseExpression)) == null || (expressions = ParseElements("Arguments", xElement, ParseExpression)) == null)
+            if ((expression = ParseFirstNode("Expression", xElement, ParseExpression)) == null)
             {
                 return default;
             }
 
             return Expression.Invoke(
                 expression,
-                expressions!);
+                ParseElements("Arguments", xElement, ParseExpression)!);
         }
                                 
         protected virtual MemberExpression? ParseMemberExpression(XElement? xElement)
         {
-            Expression? expression;
             MemberInfo? memberInfo;
 
-            if ((expression = ParseFirstNode("Expression", xElement, ParseExpression)) == null || (memberInfo = ParseFirstNode("Member", xElement, ParseMemberInfo)) == null)
+            if ((memberInfo = ParseFirstNode("Member", xElement, ParseMemberInfo)) == null)
             {
                 return default;
             }
                 
             return Expression.MakeMemberAccess(
-                expression,
+                ParseFirstNode("Expression", xElement, ParseExpression),
                 memberInfo);
         }
                                 
@@ -895,9 +891,8 @@ namespace ExpressionTools
         {
             Type? type;
             Expression? expression;
-            IEnumerable<ParameterExpression?>? parameterExpressions;
 
-            if ((type = ParseFirstNode("Type", xElement, ParseType)) == null || (expression = ParseFirstNode("Body", xElement, ParseExpression)) == null || (parameterExpressions = ParseElements("Parameters", xElement, ParseParameterExpression)) == null)
+            if ((type = ParseFirstNode("Type", xElement, ParseType)) == null || (expression = ParseFirstNode("Body", xElement, ParseExpression)) == null)
             {
                 return default;
             }
@@ -907,15 +902,14 @@ namespace ExpressionTools
                 expression, 
                 ParseValueXElement("Name", xElement, ParseGeneric<string>), 
                 ParseValueXElement("TailCall", xElement, ParseGeneric<bool>),
-                parameterExpressions!);
+                ParseElements("Parameters", xElement, ParseParameterExpression)!);
         }
                                                     
         protected virtual MethodCallExpression? ParseMethodCallExpression(XElement? xElement)
         {
             MethodInfo? methodInfo;
-            IEnumerable<Expression?>? expressions;
 
-            if ((methodInfo = ParseFirstNode("Method", xElement, ParseMethodInfo)) == null || (expressions = ParseElements("Arguments", xElement, ParseExpression)) == null)
+            if ((methodInfo = ParseFirstNode("Method", xElement, ParseMethodInfo)) == null)
             {
                 return default;
             }
@@ -923,7 +917,7 @@ namespace ExpressionTools
             return Expression.Call(
                 ParseFirstNode("Object", xElement, ParseExpression),
                 methodInfo,
-                expressions!);
+                ParseElements("Arguments", xElement, ParseExpression)!);
         }
                             
         protected virtual UnaryExpression? ParseUnaryExpression(XElement? xElement, ExpressionType expressionType)
@@ -972,7 +966,7 @@ namespace ExpressionTools
             }
 
             var name = ParseValueXElement("Name", xElement, ParseGeneric<string>);
-            var id = name + GetTypeName(type);
+            var id = $"{name}{GetTypeName(type)}";
 
             if (ParameterExpressions.TryGetValue(id, out ParameterExpression? parameterExpression))
             {
@@ -987,14 +981,14 @@ namespace ExpressionTools
                                                     
         protected virtual NewExpression? ParseNewExpression(XElement? xElement)
         {
-            ConstructorInfo? constructor;
-            IEnumerable<Expression?>? arguments;
+            var constructor = ParseFirstNode("Constructor", xElement, ParseConstructorInfo);            
 
-            if ((constructor = ParseFirstNode("Constructor", xElement, ParseConstructorInfo)) == null || (arguments = ParseElements("Arguments", xElement, ParseExpression)) == null)
+            if (constructor == null)
             {
                 return default;
             }
 
+            var arguments = ParseElements("Arguments", xElement, ParseExpression);
             var members = ParseElements("Members", xElement, ParseMemberInfo);
 
             if (members == null || !members.GetEnumerator().MoveNext())
@@ -1015,9 +1009,9 @@ namespace ExpressionTools
             }
 
             var value = ParseFirstNode("Value", xElement, Parse);
-                            
+
             value ??= ParseValueXElement("Value", xElement, type, Parse);
-                            
+
             return Expression.Constant(value, type);
         }
                                      

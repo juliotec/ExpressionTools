@@ -10,17 +10,24 @@ namespace ExpressionTools
             var expressionXmlSerializer = new ExpressionXmlSerializer();
 
 
-            Expression<Func<Context, int>> expression1 = (c => c.A + c.B);
+           /* Expression<Func<int, int>> expression1 = c => c + 1;
             var expression1Xml = expressionXmlSerializer.ToXElement(expression1);
-            var expression1Result = expressionXmlSerializer.ToExpression(expression1Xml);
-            var areEqual = ExpressionComparison.Equal(expression1, expression1Result);
+            var expression1Result = expressionXmlSerializer.ToExpression<Expression<Func<int, int>>>(expression1Xml);
+            var areEqual1 = ExpressionComparison.Equal(expression1, expression1Result);
+            var result1 = expression1Result?.Compile()(1);*/
+
+
+            Expression<Func<bool>> expression2 = () => new object() != null;
+            var expression2String = expressionXmlSerializer.ToXElement(expression2);
+            var expression2Result = expressionXmlSerializer.ToExpression<Expression<Func<bool>>>(expression2String);
+            var areEqual2 = ExpressionComparison.Equal(expression2, expression2Result);
+            var result2 = expression2Result?.Compile()();
 
 
 
 
 
-
-            Expression<Func<IEnumerable<int>, IEnumerable<int>>> expression2 = c =>
+            Expression<Func<IEnumerable<int>, IEnumerable<int>>> expression23 = c =>
                 from x in c
                 let someConst6547588C372F49698Ec3B242C745Fca0 = 8
                 where (x == someConst6547588C372F49698Ec3B242C745Fca0)
@@ -40,31 +47,6 @@ namespace ExpressionTools
                 select x;
 
             var w = expressionXmlSerializer.ToXElement(expr);
-        }
-
-        private sealed class Context
-        {
-            public int A;
-            public int B { get; set; }
-            public int? C;
-            public int[]? Array;
-            public int this[string key]
-            {
-                get
-                {
-                    switch (key)
-                    {
-                        case "A": return this.A;
-                        case "B": return this.B;
-                        case "C": return this.C ?? 0;
-                        default: throw new NotImplementedException();
-                    }
-                }
-            }
-            public Func<int>? Func;
-            public int Method() { return this.A; }
-            public int Method(string key) { return this[key]; }
-            public object Method3() { return this.A; }
         }
     }
 }
