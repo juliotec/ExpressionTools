@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 
-namespace ExpressionXmlSerializer
+namespace ExpressionTools
 {
     public abstract class ExpressionVisitor
     {

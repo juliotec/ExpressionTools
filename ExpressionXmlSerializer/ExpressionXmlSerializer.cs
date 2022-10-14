@@ -3,7 +3,7 @@ using System.Xml.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace ExpressionXmlSerializer
+namespace ExpressionTools
 {    
     public class ExpressionXmlSerializer : IExpressionXmlSerializer
     {
@@ -1074,9 +1074,19 @@ namespace ExpressionXmlSerializer
             return CreateMemberInfoXElement(memberInfo);
         }
 
+        public string? ToString(MemberInfo? memberInfo)
+        {
+            return ToXElement(memberInfo)?.ToString();
+        }
+
         public XElement? ToXElement(ElementInit? elementInit)
         {
             return CreateElementInitXElement(elementInit);
+        }
+
+        public string? ToString(ElementInit? elementInit)
+        {
+            return ToXElement(elementInit)?.ToString();
         }
 
         public XElement? ToXElement(MemberBinding? memberBinding)
@@ -1084,9 +1094,19 @@ namespace ExpressionXmlSerializer
             return CreateMemberBindingXElement(memberBinding);
         }
 
+        public string? ToString(MemberBinding? memberBinding)
+        {
+            return ToXElement(memberBinding)?.ToString();
+        }
+
         public XElement? ToXElement(Expression? expression)
         {
             return CreateExpressionXElement(expression);
+        }
+
+        public string? ToString(Expression? expression)
+        {
+            return ToXElement(expression)?.ToString();
         }
 
         public MemberInfo? ToMemberInfo(XElement? xElement)
@@ -1094,9 +1114,29 @@ namespace ExpressionXmlSerializer
             return ParseGeneric<MemberInfo>(xElement);
         }
 
+        public MemberInfo? ToMemberInfo(string? val)
+        {
+            if (val == null)
+            {
+                return default;
+            }
+
+            return ToMemberInfo(XElement.Parse(val));
+        }
+
         public T? ToMemberInfo<T>(XElement? xElement) where T : MemberInfo
         {
             return ParseGeneric<T>(xElement);
+        }
+
+        public T? ToMemberInfo<T>(string? val) where T : MemberInfo
+        {
+            if (val == null)
+            {
+                return default;
+            }
+
+            return ToMemberInfo<T>(XElement.Parse(val));
         }
 
         public ElementInit? ToElementInit(XElement? xElement)
@@ -1104,14 +1144,44 @@ namespace ExpressionXmlSerializer
             return ParseGeneric<ElementInit>(xElement);
         }
 
+        public ElementInit? ToElementInit(string? val)
+        {
+            if (val == null)
+            {
+                return default;
+            }
+
+            return ToElementInit(XElement.Parse(val));
+        }
+
         public MemberBinding? ToMemberBinding(XElement? xElement)
         {
             return ParseGeneric<MemberBinding>(xElement);
         }
 
+        public MemberBinding? ToMemberBinding(string? val)
+        {
+            if (val == null)
+            {
+                return default;
+            }
+
+            return ToMemberBinding(XElement.Parse(val));
+        }
+
         public T? ToMemberBinding<T>(XElement? xElement) where T : MemberBinding
         {
             return ParseGeneric<T>(xElement);
+        }
+
+        public T? ToMemberBinding<T>(string? val) where T : MemberBinding
+        {
+            if (val == null)
+            {
+                return default;
+            }
+
+            return ToMemberBinding<T>(XElement.Parse(val));
         }
 
         public Expression? ToExpression(XElement? xElement)
@@ -1121,11 +1191,31 @@ namespace ExpressionXmlSerializer
             return ParseGeneric<Expression>(xElement);
         }
 
+        public Expression? ToExpression(string? val)
+        {
+            if (val == null)
+            {
+                return default;
+            }
+
+            return ToExpression(XElement.Parse(val));
+        }
+
         public T? ToExpression<T>(XElement? xElement) where T : Expression
         {
             ParameterExpressions.Clear();
 
             return ParseGeneric<T>(xElement);
+        }
+
+        public T? ToExpression<T>(string? val) where T : Expression
+        {
+            if (val == null)
+            {
+                return default;
+            }
+
+            return ToExpression<T>(XElement.Parse(val));
         }
 
         #endregion

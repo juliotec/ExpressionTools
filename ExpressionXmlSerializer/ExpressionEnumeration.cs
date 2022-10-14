@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Linq.Expressions;
 
-namespace ExpressionXmlSerializer
+namespace ExpressionTools
 {
     public class ExpressionEnumeration : ExpressionVisitor, IEnumerable<Expression>
     {

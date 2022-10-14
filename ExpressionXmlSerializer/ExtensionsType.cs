@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace ExpressionXmlSerializer
+namespace ExpressionTools
 {    
     public static class ExtensionsType
     {

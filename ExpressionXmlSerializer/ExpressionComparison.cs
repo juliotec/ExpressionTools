@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 
-namespace ExpressionXmlSerializer
+namespace ExpressionTools
 {
     public class ExpressionComparison : ExpressionVisitor
     {
@@ -39,6 +39,11 @@ namespace ExpressionXmlSerializer
 
         #endregion
         #region Methods
+
+        public static bool Equal(Expression? a, Expression? b)
+        {
+            return new ExpressionComparison(a, b).AreEqual;
+        }
 
         private Expression? PeekCandidate()
         {            
